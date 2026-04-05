@@ -48,7 +48,7 @@ public class Book {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "libray_id",nullable = false)
-	private Library libray;
+	private Library library;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "borrowed_by_user_id")
