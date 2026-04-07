@@ -43,9 +43,15 @@ public class Library {
 	private String phone;
 	private String email;
 	
+    // All books stored in this library
 	@OneToMany(mappedBy = "library", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@Builder.Default
 	private List<Book> books = new ArrayList<>();
+	
+	   // All users registered in this library
+	@OneToMany(mappedBy = "library", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @Builder.Default
+    private List<User> users = new ArrayList<>();
 	
 	@Column(updatable = false)
 	private LocalDateTime createdAt;

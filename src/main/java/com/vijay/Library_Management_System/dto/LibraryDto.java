@@ -29,6 +29,7 @@ public class LibraryDto {
 	}
 	
    //this is used to give the response
+	 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 	public static class Response{
 		   private Long id;
 	        private String name;

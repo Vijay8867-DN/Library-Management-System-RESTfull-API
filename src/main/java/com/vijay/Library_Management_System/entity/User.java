@@ -45,7 +45,7 @@ public class User {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "library_id",nullable = false)
-	private Library libray;
+	private Library library;
 	
 	@OneToMany(mappedBy = "borrowedBy")
 	@Builder.Default
