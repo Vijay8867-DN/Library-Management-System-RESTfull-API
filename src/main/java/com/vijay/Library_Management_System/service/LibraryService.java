@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.vijay.Library_Management_System.dto.LibraryDto;
 import com.vijay.Library_Management_System.dto.LibraryDto.Response;
+import com.vijay.Library_Management_System.entity.Library;
 
 import jakarta.validation.Valid;
 
@@ -18,5 +19,7 @@ public interface LibraryService {
 	LibraryDto.Response updateLibrary(Long id, LibraryDto.Request request);
 
 	void deleteLibrary(Long id);
+	
+	Library findById(Long id);
 
 }

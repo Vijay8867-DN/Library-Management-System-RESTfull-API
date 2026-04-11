@@ -33,7 +33,7 @@ public class Book {
 	private Long id;
 	
 	@Column(nullable = false)
-	private String tile;
+	private String title;
 	
 	@Column(nullable = false)
 	private String author;
@@ -44,7 +44,7 @@ public class Book {
 	private String genre;
 	
 	@Builder.Default
-	private Boolean avoilable = true;
+	private Boolean available = true;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "libray_id",nullable = false)
