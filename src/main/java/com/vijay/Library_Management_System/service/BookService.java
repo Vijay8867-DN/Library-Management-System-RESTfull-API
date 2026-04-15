@@ -3,6 +3,8 @@ package com.vijay.Library_Management_System.service;
 import java.util.List;
 
 import com.vijay.Library_Management_System.dto.BookDto;
+import com.vijay.Library_Management_System.dto.BookDto.Response;
+import com.vijay.Library_Management_System.entity.Book;
 
 import jakarta.validation.Valid;
 
@@ -23,6 +25,12 @@ public interface BookService {
 	BookDto.Response updateBook(Long id, BookDto.Request request);
 
 	void deleteBook(Long id);
+	
+	BookDto.Response toResponse(Book book);
+
+	BookDto.Response assignBookToUser(Long bookId, Long userId);
+
+	BookDto.Response returnBook(Long bookId, Long userId);
 
 		
 }

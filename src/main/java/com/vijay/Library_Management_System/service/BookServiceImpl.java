@@ -14,10 +14,13 @@ import com.vijay.Library_Management_System.dto.BookDto;
 import com.vijay.Library_Management_System.dto.BookDto.Response;
 import com.vijay.Library_Management_System.entity.Book;
 import com.vijay.Library_Management_System.entity.Library;
+import com.vijay.Library_Management_System.entity.User;
 import com.vijay.Library_Management_System.exception.BadRequestException;
+import com.vijay.Library_Management_System.exception.BookNotAvailableException;
 import com.vijay.Library_Management_System.exception.DuplicateResourceException;
 import com.vijay.Library_Management_System.exception.ResourceNotFoundException;
 import com.vijay.Library_Management_System.repository.BookRepo;
+import com.vijay.Library_Management_System.repository.UserRepo;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -30,6 +33,7 @@ public class BookServiceImpl implements BookService{
 
 	private final BookRepo bookRepo;
 	private final LibraryService libraryService;
+	private final UserRepo userRepo;
 	
 	@Override
 	@Transactional
@@ -170,6 +174,51 @@ public class BookServiceImpl implements BookService{
 		
 		bookRepo.deleteById(id);
 		
+	}
+
+	@Override
+	public Response assignBookToUser(Long bookId, Long userId) {
+		Book book = findById(bookId);
+		
+		if(!book.getAvailable()) {
+			throw new BookNotAvailableException(
+					"Book '"+book.getTitle()+"' is not available - it is already borrowed.");
+		}
+		
+		User user = userRepo.findById(userId)
+					.orElseThrow(()-> new ResourceNotFoundException(
+							"User not found with the Id: "+userId));
+		
+		if(!book.getLibrary().getId().equals(user.getLibrary().getId())) {
+			throw new BadRequestException(
+                    "Book and user must belong to the same library. "
+                    + "Book is in library ID " + book.getLibrary().getId()
+                    + " but user is registered in library ID " + user.getLibrary().getId() + ".");
+		}
+		
+		book.setAvailable(false);
+		book.setBorrowedBy(user);
+		
+		return toResponse(bookRepo.save(book));
+	}
+
+	@Override
+	public Response returnBook(Long bookId, Long userId) {
+		Book book = findById(bookId);
+		
+		if(book.getAvailable() || book.getBorrowedBy() == null) {
+			throw new BadRequestException(
+					 "Book '" + book.getTitle() + "' is not currently borrowed.");
+		}
+		
+		if(!book.getBorrowedBy().getId().equals(userId)) {
+			throw new BadRequestException(
+                    "Book '" + book.getTitle() + "' was not borrowed by user ID " + userId + ".");
+		}
+		
+		book.setAvailable(true);
+		book.setBorrowedBy(null);
+		return toResponse(bookRepo.save(book));
 	}
 
 	

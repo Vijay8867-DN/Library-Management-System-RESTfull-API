@@ -6,4 +6,6 @@ import com.vijay.Library_Management_System.entity.User;
 
 public interface UserRepo extends JpaRepository<User, Long>{
 
+	boolean existsByEmail(String email);
+
 }

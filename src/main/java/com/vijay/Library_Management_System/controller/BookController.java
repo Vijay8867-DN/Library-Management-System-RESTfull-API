@@ -85,5 +85,23 @@ public class BookController {
 	     return ResponseEntity
 	    		 .ok(ApiResponse.success("Book deleted Successfully",null));
 	}
+	
+	@PostMapping("/bookId/{bookId}/assign/userId/{userId}")
+	public ResponseEntity<ApiResponse<BookDto.Response>> assignToUser(
+			@PathVariable Long bookId,
+			@PathVariable Long userId){
+		BookDto.Response result = bookService.assignBookToUser(bookId,userId);
+		return ResponseEntity.ok(
+				ApiResponse.success("Book is assigned to user successfully", result));
+	}
+	
+	@PostMapping("/bookId/{bookId}/return/userId/{userId}")
+	public ResponseEntity<ApiResponse<BookDto.Response>> returnBook(
+			@PathVariable Long bookId,
+			@PathVariable Long userId){
+		BookDto.Response result = bookService.returnBook(bookId,userId);
+		return ResponseEntity.ok(
+				ApiResponse.success("Book returned successfully", result));
+	}
 		
 }
