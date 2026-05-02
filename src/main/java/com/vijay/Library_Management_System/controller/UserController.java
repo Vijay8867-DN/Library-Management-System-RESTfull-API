@@ -30,6 +30,7 @@ public class UserController {
 	
 	// POST /api/users/register
     // Registers a user into a specific library (libraryId required in body)
+	
 	@PostMapping("/register")
 	public ResponseEntity<ApiResponse<UserDto.Response>> register(
 			@Valid @RequestBody UserDto.Request request){
